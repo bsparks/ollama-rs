@@ -5,9 +5,19 @@ use url::Url;
 #[cfg(feature = "macros")]
 pub use ollama_rs_macros::function;
 
+#[cfg(feature = "macros")]
+pub mod re_exports {
+    pub use schemars;
+    pub use serde;
+}
+
 pub mod coordinator;
 pub mod error;
 pub mod generation;
+
+// Re-export streaming coordinator types when stream feature is enabled
+#[cfg(feature = "stream")]
+pub use coordinator::{Coordinator, CoordinatorStreamEvent};
 #[cfg_attr(docsrs, doc(cfg(feature = "headers")))]
 #[cfg(feature = "headers")]
 pub mod headers;

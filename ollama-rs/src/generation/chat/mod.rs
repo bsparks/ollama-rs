@@ -80,11 +80,13 @@ impl Ollama {
 
                             // Process all collected lines
                             for line in lines_to_process {
+                                println!("send_chat_messages_stream: line {line}");
+
                                 // Parse the JSON line
                                 match serde_json::from_str::<ChatMessageResponse>(&line) {
                                     Ok(response) => yield Ok(response),
                                     Err(e) => {
-                                        eprintln!("Failed to deserialize response: {}", e);
+                                        eprintln!("Failed to deserialize response: {e}");
                                         // Continue processing other lines even if one fails
                                     }
                                 }
@@ -92,7 +94,7 @@ impl Ollama {
                         }
                     }
                     Err(e) => {
-                        eprintln!("Failed to read response: {}", e);
+                        eprintln!("Failed to read response: {e}");
                         yield Err(());
                         break;
                     }
@@ -170,6 +172,8 @@ impl Ollama {
 
             while let Some(item) = resp_stream.try_next().await.unwrap() {
                 let msg_part = item.clone().message.content;
+
+                println!("send_chat_messages_with_history_stream: item {item:?}");
 
                 if item.done {
                     history.lock().unwrap().push(ChatMessage::assistant(result.clone()));
@@ -249,6 +253,7 @@ pub struct ChatMessage {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub images: Option<Vec<Image>>,
     pub thinking: Option<String>,
+    pub tool_name: Option<String>,
 }
 
 impl ChatMessage {
@@ -259,6 +264,7 @@ impl ChatMessage {
             tool_calls: vec![],
             images: None,
             thinking: None,
+            tool_name: None,
         }
     }
 
@@ -274,8 +280,10 @@ impl ChatMessage {
         Self::new(MessageRole::System, content)
     }
 
-    pub fn tool(content: String) -> Self {
-        Self::new(MessageRole::Tool, content)
+    pub fn tool(content: String, tool_name: String) -> Self {
+        let mut result = Self::new(MessageRole::Tool, content);
+        result.tool_name = Some(tool_name);
+        result
     }
 
     pub fn with_images(mut self, images: Vec<Image>) -> Self {

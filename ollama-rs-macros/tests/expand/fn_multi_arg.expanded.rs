@@ -4,8 +4,11 @@ extern crate ollama_rs_macros;
 mod __hello_world_data {
     #[allow(unused_imports)]
     use super::*;
+    use ollama_rs::re_exports::schemars;
+    use ollama_rs::re_exports::serde;
     #[doc(hidden)]
     #[allow(non_camel_case_types, missing_docs)]
+    #[serde(crate = "ollama_rs::re_exports::serde")]
     pub struct __hello_world__Params {
         ///The phrase to use for greeting
         pub greeting: String,
@@ -35,10 +38,7 @@ impl ::ollama_rs::generation::tools::Tool for hello_world {
         {
             Ok(
                 ::alloc::__export::must_use({
-                    let res = ::alloc::fmt::format(
-                        format_args!("{0} {1}", greeting, name),
-                    );
-                    res
+                    ::alloc::fmt::format(format_args!("{0} {1}", greeting, name))
                 }),
             )
         }
@@ -48,8 +48,11 @@ impl ::ollama_rs::generation::tools::Tool for hello_world {
 mod __dummy_data {
     #[allow(unused_imports)]
     use super::*;
+    use ollama_rs::re_exports::schemars;
+    use ollama_rs::re_exports::serde;
     #[doc(hidden)]
     #[allow(non_camel_case_types, missing_docs)]
+    #[serde(crate = "ollama_rs::re_exports::serde")]
     pub struct __dummy__Params {
         ///Arg one
         pub one: String,
@@ -81,10 +84,9 @@ impl ::ollama_rs::generation::tools::Tool for dummy {
         {
             Ok(
                 ::alloc::__export::must_use({
-                    let res = ::alloc::fmt::format(
+                    ::alloc::fmt::format(
                         format_args!("{0} {1} {2}", greeting, name, three),
-                    );
-                    res
+                    )
                 }),
             )
         }

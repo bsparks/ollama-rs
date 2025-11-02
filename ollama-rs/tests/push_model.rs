@@ -1,7 +1,7 @@
 use ollama_rs::Ollama;
 use tokio_stream::StreamExt;
 
-#[tokio::test]
+//#[tokio::test]
 /// This test needs a local model named `test_model:latest` to work, and requires registering for ollama.ai and adding a public key first.
 async fn test_push_model() {
     let ollama = Ollama::default();
@@ -13,8 +13,8 @@ async fn test_push_model() {
 
     while let Some(res) = res.next().await {
         match res {
-            Ok(res) => println!("{:?}", res),
-            Err(e) => panic!("{:?}", e),
+            Ok(res) => println!("{res:?}"),
+            Err(e) => panic!("{e:?}"),
         }
     }
 }
