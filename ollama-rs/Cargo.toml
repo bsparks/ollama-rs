@@ -17,6 +17,10 @@ required-features = ["macros"]
 name = "function_call_structured"
 required-features = ["macros"]
 
+[[example]]
+name = "streaming_with_tools"
+required-features = ["stream", "macros"]
+
 [dependencies]
 reqwest = { version = "0.12.23", default-features = false, features = ["json"] }
 serde = { version = "1", features = ["derive"] }
@@ -55,6 +59,7 @@ tokio-stream = { version = "0.1.17", features = ["io-util"] }
 futures-util = "0.3"
 ollama-rs = { path = ".", features = [
     "stream",
+    "macros",
     "headers",
     "tool-implementations",
 ] }

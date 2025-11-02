@@ -14,6 +14,10 @@ pub mod re_exports {
 pub mod coordinator;
 pub mod error;
 pub mod generation;
+
+// Re-export streaming coordinator types when stream feature is enabled
+#[cfg(feature = "stream")]
+pub use coordinator::{Coordinator, CoordinatorStreamEvent};
 #[cfg_attr(docsrs, doc(cfg(feature = "headers")))]
 #[cfg(feature = "headers")]
 pub mod headers;
